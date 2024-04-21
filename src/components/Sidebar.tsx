@@ -15,37 +15,25 @@ export default function Sidebar({
   setSelectedIndex,
 }: Props) {
   return (
-    <div className={`w-20 bg-gray-900 flex justify-between flex-col`}>
+    <div className={`w-20 bg-[#181818] flex justify-between flex-col py-2`}>
       <div className="flex justify-center flex-col gap-4">
         <div
-          className={`${
-            expanded ? "border-l-4 border-white" : "border-l-4"
-          } cursor-pointer`}
+          className={`border-white border-l-4 cursor-pointer`}
           onClick={() => setExpanded(!expanded)}
         >
-          <div
-            className={`flex justify-center my-3 ${
-              expanded ? "text-white" : "text-gray-600"
-            } text-3xl`}
-          >
+          <div className="flex items-center justify-center my-1 text-gray-600 text-3xl hover:text-white">
             <VscFiles />
           </div>
         </div>
-        <a
-          target="_blank"
-          href={"https://github.com/noworneverev/react-vscode-portfolio"}
-          className="cursor-pointer flex justify-center"
-        >
-          <div className="flex items-center justify-center my-1 text-gray-600 text-3xl">
+        <a className="cursor-pointer flex justify-center">
+          <div className="flex items-center justify-center my-1 text-gray-600 text-3xl hover:text-white">
             <BiGitBranch />
           </div>
         </a>
-        <div
-          className="flex justify-center flex-col pb-2"
-        >
+        <div className="flex justify-center flex-col pb-2">
           <a
             onClick={() => {
-              setSelectedIndex(-1);
+              // setSelectedIndex(-1);
             }}
             className="cursor-pointer flex justify-center"
           >
