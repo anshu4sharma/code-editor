@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.resizable-container {
+    display: grid;
+    grid-template-columns: auto; /* Adjust column widths as needed */
+    grid-template-rows: auto;
+    gap: 10px; /* Adjust gap between windows */
+  }
+  
+  .resizable-window {
+    border: 1px solid #ccc;
+    overflow: hidden;
+  }
+  
+  .resizable-handler {
+    width: 5px; /* Adjust handle size */
+    height: 100%;
+    background-color: #ddd;
+    cursor: ew-resize;
+  }
+  
