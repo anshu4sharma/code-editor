@@ -1,6 +1,5 @@
 import React from "react";
-import { BiGitBranch } from "react-icons/bi";
-import { VscFiles, VscSettingsGear } from "react-icons/vsc";
+import { VscFiles, VscSearch } from "react-icons/vsc";
 interface Props {
   expanded: boolean;
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,35 +11,28 @@ interface Props {
 export default function Sidebar({
   expanded,
   setExpanded,
-  setSelectedIndex,
+  // setSelectedIndex,
 }: Props) {
   return (
-    <div className={`w-20 bg-[#181818] flex justify-between flex-col py-2`}>
+    <div className={`w-20 bg-[#181818] flex justify-between flex-col pr-4 py-2`}>
       <div className="flex justify-center flex-col gap-4">
         <div
-          className={`border-white border-l-4 cursor-pointer`}
+          className={`border-white border-l-4 pl-4 cursor-pointer`}
           onClick={() => setExpanded(!expanded)}
         >
-          <div className="flex items-center justify-center my-1 text-gray-600 text-3xl hover:text-white">
+          <div className="flex items-center justify-center my-1 text-3xl text-white">
+          {/* <div className="flex items-center justify-center my-1 text-gray-600 text-3xl "> */}
             <VscFiles />
           </div>
         </div>
-        <a className="cursor-pointer flex justify-center">
-          <div className="flex items-center justify-center my-1 text-gray-600 text-3xl hover:text-white">
-            <BiGitBranch />
-          </div>
-        </a>
         <div className="flex justify-center flex-col pb-2">
-          <a
-            onClick={() => {
-              // setSelectedIndex(-1);
-            }}
+          <div
             className="cursor-pointer flex justify-center"
           >
             <div className="flex items-center justify-center my-1 text-gray-600 text-3xl hover:text-white">
-              <VscSettingsGear />
+              <VscSearch />
             </div>
-          </a>
+          </div>
         </div>
       </div>
     </div>

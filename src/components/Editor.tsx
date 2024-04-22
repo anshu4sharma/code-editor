@@ -1,4 +1,4 @@
-import EditorReact, { MonacoDiffEditor } from "@monaco-editor/react";
+import EditorReact from "@monaco-editor/react";
 import { loader } from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
 import * as monaco from "monaco-editor";
@@ -9,7 +9,11 @@ import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 import { RxCross2 } from "react-icons/rx";
 import { IoLogoHtml5, IoLogoCss3, IoLogoJavascript } from "react-icons/io";
-import { emmetHTML, emmetCSS  , } from "emmet-monaco-es";
+import { emmetHTML, emmetCSS } from "emmet-monaco-es";
+import { ResizableBox } from "react-resizable";
+import useResizableWindow from "../hooks/useResizableWindow";
+
+// import convertArrayToString from "../utils/convertArrayToString";
 
 self.MonacoEnvironment = {
   getWorker(_, label) {
@@ -79,18 +83,21 @@ const Editor = () => {
       disposeEmmetCSSRef.current ? disposeEmmetCSSRef.current() : null;
     };
   }, []);
+  const [windowWidth, resizableProps] = useResizableWindow(200);
+  console.log(windowWidth, "windowWidth");
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col" id="editor">
       <Tabs openTab={openTab} setOpenTab={setOpenTab} />
       <EditorReact
         height="94vh"
+        // @ts-ignore
+        {...(resizableProps as React.PropsWithChildren<typeof EditorReact>)}
         theme="vs-dark"
         defaultLanguage={file.language}
         defaultValue={file.value}
         value={code}
-        line={1}
-        className="w-1/2 h-full"
         path={file.name}
+        className="cursor-e-resize"
         beforeMount={handleEditorWillMount}
         onChange={handleCodeChange}
         options={{
@@ -98,8 +105,7 @@ const Editor = () => {
             enabled: false,
           },
           fontSize: 18,
-          // wordWrap: wrap ? 'on' : 'off',
-          smoothScrolling: true,
+          wordWrap: "on",
         }}
       />
     </div>
@@ -119,7 +125,7 @@ const Tabs = ({
     <div className="h-[6vh] flex w-full bg-[#181818]">
       <div
         className={
-          "text-xs font-bold flex  cursor-pointer justify-between gap-4 items-center px-6 py-4  leading-normal " +
+          "text-xs font-bold flex cursor-pointer justify-between gap-4 items-center px-6 py-4 " +
           (openTab === 1
             ? "text-white border-t-2 border-blue-500 bg-[#131313]"
             : "text-[#b2b2b2] ")
@@ -128,12 +134,13 @@ const Tabs = ({
           setOpenTab(1);
         }}
       >
-        <IoLogoHtml5 color="#E44D26" size={20} /> <p> index.html</p>
+        <IoLogoHtml5 color="#E44D26" size={20} />
+        <p> index.html</p>
         <RxCross2 size={18} />
       </div>
       <div
         className={
-          "text-xs font-bold flex  cursor-pointer justify-between gap-4 items-center px-6 py-4  leading-normal " +
+          "text-xs font-bold flex  cursor-pointer justify-between gap-4 items-center px-6 py-4 " +
           (openTab === 2
             ? "text-white border-t-2 border-blue-500 bg-[#131313]"
             : "text-[#b2b2b2] ")
@@ -148,7 +155,7 @@ const Tabs = ({
       </div>
       <div
         className={
-          "text-xs font-bold flex  cursor-pointer justify-between gap-4 items-center px-6 py-4  leading-normal " +
+          "text-xs font-bold flex  cursor-pointer justify-between gap-4 items-center px-6 py-4 " +
           (openTab === 3
             ? "text-white border-t-2 border-blue-500 bg-[#131313]"
             : "text-[#b2b2b2] ")
@@ -158,7 +165,6 @@ const Tabs = ({
         }}
       >
         <IoLogoJavascript color="yellow" size={20} />
-
         <p> main.js</p>
         <RxCross2 size={18} />
       </div>
