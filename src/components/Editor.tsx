@@ -8,12 +8,11 @@ import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
 import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 import { RxCross2 } from "react-icons/rx";
-import { IoLogoHtml5, IoLogoCss3, IoLogoJavascript } from "react-icons/io";
 import { emmetHTML, emmetCSS } from "emmet-monaco-es";
-import { ResizableBox } from "react-resizable";
 import useResizableWindow from "../hooks/useResizableWindow";
-
-// import convertArrayToString from "../utils/convertArrayToString";
+import useActiveTabs from "../store/useActiveTabs";
+import useFiles from "../store/useFiles";
+import AddIcons from "./AddIcons";
 
 self.MonacoEnvironment = {
   getWorker(_, label) {
@@ -87,7 +86,7 @@ const Editor = () => {
   console.log(windowWidth, "windowWidth");
   return (
     <div className="w-full h-full flex flex-col" id="editor">
-      <Tabs openTab={openTab} setOpenTab={setOpenTab} />
+      <Tabs />
       <EditorReact
         height="94vh"
         // @ts-ignore
@@ -114,39 +113,42 @@ const Editor = () => {
 
 export default Editor;
 
-const Tabs = ({
-  openTab,
-  setOpenTab,
-}: {
-  openTab: number;
-  setOpenTab: React.Dispatch<React.SetStateAction<number>>;
-}) => {
+const Tabs = () => {
+  const { tab, changeTab } = useActiveTabs((state) => state);
+  const { files } = useFiles((state) => state);
+
   return (
     <div className="h-[6vh] flex w-full bg-[#181818]">
-      <div
-        className={
-          "text-xs font-bold flex cursor-pointer justify-between gap-4 items-center px-6 py-4 " +
-          (openTab === 1
-            ? "text-white border-t-2 border-blue-500 bg-[#131313]"
-            : "text-[#b2b2b2] ")
-        }
-        onClick={() => {
-          setOpenTab(1);
-        }}
-      >
-        <IoLogoHtml5 color="#E44D26" size={20} />
-        <p> index.html</p>
-        <RxCross2 size={18} />
-      </div>
-      <div
+      {files.map((file, index) => {
+        return (
+          <div
+            key={index}
+            className={
+              "text-xs font-bold flex cursor-pointer justify-between gap-4 items-center px-6 py-4 " +
+              (tab === index + 1
+                ? "text-white border-t-2 border-blue-500 bg-[#131313]"
+                : "text-[#b2b2b2] ")
+            }
+            onClick={() => {
+              changeTab(index + 1);
+            }}
+          >
+            <AddIcons extension={file.title} key={index} />
+            <p> {file.title}</p>
+            <RxCross2 size={18} />
+          </div>
+        );
+      })}
+
+      {/* <div
         className={
           "text-xs font-bold flex  cursor-pointer justify-between gap-4 items-center px-6 py-4 " +
-          (openTab === 2
+          (tab === 2
             ? "text-white border-t-2 border-blue-500 bg-[#131313]"
             : "text-[#b2b2b2] ")
         }
         onClick={() => {
-          setOpenTab(2);
+          changeTab(2);
         }}
       >
         <IoLogoCss3 color="#42A5F5" size={20} />
@@ -156,18 +158,18 @@ const Tabs = ({
       <div
         className={
           "text-xs font-bold flex  cursor-pointer justify-between gap-4 items-center px-6 py-4 " +
-          (openTab === 3
+          (tab === 3
             ? "text-white border-t-2 border-blue-500 bg-[#131313]"
             : "text-[#b2b2b2] ")
         }
         onClick={() => {
-          setOpenTab(3);
+          changeTab(3);
         }}
       >
         <IoLogoJavascript color="yellow" size={20} />
         <p> main.js</p>
         <RxCross2 size={18} />
-      </div>
+      </div> */}
     </div>
   );
 };

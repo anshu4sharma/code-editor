@@ -1,4 +1,4 @@
-import { fileData } from '../context/types.ts';
+import { fileData } from '../types/types.ts';
 
 const convertArrayToString = (filesData: fileData[]) => {
   // Filtering and Combining all files into One
